@@ -1,0 +1,8 @@
+eclipse.preferences.version=1
+encoding//src/data/Address.java=UTF-8
+encoding//src/data/Name.java=UTF-8
+encoding//src/data/Student.java=UTF-8
+encoding//src/jdbc/ConnectionUtils.java=UTF-8
+encoding//src/jdbc/MySQLConnUtils.java=UTF-8
+encoding//src/userinterface/Interface.java=UTF-8
+encoding//src/xmlexport/StudentXML.java=UTF-8
