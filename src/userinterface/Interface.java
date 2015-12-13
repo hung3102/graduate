@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 import data.*;
-import xmlexport.StudentXML;
+import xml.StudentXML;
 
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
