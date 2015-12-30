@@ -2,6 +2,7 @@ package xml;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,10 +27,13 @@ public class StudentXML {
     
     private XMLStreamWriter xMLStreamWriter;
 	public void createXMLFile(int nameID, int gender, Date birthday, int addressID, int nativeID) 
-			throws ClassNotFoundException, SQLException, TransformerException {
+			throws ClassNotFoundException, SQLException, TransformerException, XMLStreamException {
 		try {	         
-			 XMLOutputFactory xMLOutputFactory = XMLOutputFactory.newInstance();	
-	         this.xMLStreamWriter = xMLOutputFactory.createXMLStreamWriter(new FileWriter(this.getFileName(nameID)));
+			 XMLOutputFactory xMLOutputFactory = XMLOutputFactory.newInstance();
+			 String path = Paths.get(".").toAbsolutePath().normalize().toString();
+			 String fs = System.getProperty("file.separator");
+			 this.xMLStreamWriter = xMLOutputFactory.createXMLStreamWriter(new FileWriter(
+						path + fs + "resources" + fs + "xml" + fs + this.getFileName(nameID)));
 	         
 	         this.xMLStreamWriter.writeStartDocument();
 	         this.xMLStreamWriter.writeStartElement("student");
@@ -43,19 +47,19 @@ public class StudentXML {
 	         this.xMLStreamWriter.writeEndElement();
 	         this.xMLStreamWriter.writeEndDocument();
 
-	         this.xMLStreamWriter.flush();
-	         this.xMLStreamWriter.close();
-
 	      } catch (XMLStreamException e) {
 	         e.printStackTrace();
 	      } catch (IOException e) {
 	         e.printStackTrace();
+	      } finally {
+	    	  this.xMLStreamWriter.flush();
+		      this.xMLStreamWriter.close();
 	      }
 	}
 	
 	
 	
-	private String getFileName(int nameID) throws ClassNotFoundException, SQLException {
+	public String getFileName(int nameID) throws ClassNotFoundException, SQLException {
 		Name name = new Name().searchNameByID(nameID);
 		String n = null;
 		if(name != null) {
@@ -120,39 +124,39 @@ public class StudentXML {
 		String addressContent = "";
 		if(address != null) {
 			if(address.houseNumber != null) {
-				addressContent += "Nhà số " + address.houseNumber + " , ";
+				addressContent += "Nhà số " + address.houseNumber + ", ";
 			}
 			if(address.street != null) {
-				addressContent += address.street + " ,";
+				addressContent += address.street + ", ";
 			} 
 			if(address.hamlet != null) {
-				addressContent += "xóm" + address.hamlet + " , ";
+				addressContent += "xóm " + address.hamlet + ", ";
 			}
 			if(address.communeID != 0) {
 				int communeID = address.communeID;
 				Commune commune = new Commune().seachCommuneByID(communeID);
 				if(commune != null) {
-					addressContent += "xã(phư�?ng) " + commune.name + " , ";
+					addressContent += "xã(phường) " + commune.name + ", ";
 				}
 			}
 			if(address.districtID != 0) {
 				int districtID = address.districtID;
 				District district = new District().seachDistrictByID(districtID);
 				if(district != null) {
-					addressContent += "huyện(quận) " + district.name + " , ";
+					addressContent += "huyện(quận) " + district.name + ", ";
 				}
 			} 
 			if(address.provinceID != 0) {
 				int provinceID = address.provinceID;
 				Province province = new Province().seachProvinceByID(provinceID);
 				if(province != null) {
-					addressContent += "tỉnh(TP) " + province.name + " , ";
+					addressContent += "tỉnh(TP) " + province.name + ", ";
 				}
 			}
 		}
 		
 		if(addressContent.length() > 1) {
-			return addressContent.substring(0, addressContent.length()-3);
+			return addressContent.substring(0, addressContent.length()-2);
 		} else {
 			return addressContent;
 		}

@@ -7,4 +7,5 @@ encoding//src/jdbc/ConnectionUtils.java=UTF-8
 encoding//src/jdbc/MySQLConnUtils.java=UTF-8
 encoding//src/userinterface/Interface.java=UTF-8
 encoding//src/x12/X12Creation.java=UTF-8
+encoding//src/x12/X12toXML.java=UTF-8
 encoding//src/xml/StudentXML.java=UTF-8

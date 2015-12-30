@@ -1,5 +1,9 @@
 package x12;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,8 +13,8 @@ import java.util.List;
 import xml.ParseXML;
 
 public class X12Creation {
-	public static void main(String[] args) {
-
+	
+	public X12 x12Create() {
 		Context c = new Context('~', '*', ':');
 
 		X12 x12 = new X12(c);
@@ -30,17 +34,29 @@ public class X12Creation {
 		loop_gs.addSegment("GS*1212*SENDERID*RECEIVERID*" + date + "*" + time + "*000000001*X*00401");
 
 		Loop loop_st = loop_gs.addChild("ST");
-		loop_st.addSegment("ST*996*000000001");
+		loop_st.addSegment("ST*835*000000001");
 		
+		File f1 = new ChooseFile().getXMLFile();
 		ParseXML studentParse = new ParseXML();
-		HashMap<String, String> studentXML = studentParse.toMap("Đào Văn Hùng.xml");
+		HashMap<String, String> studentXML = studentParse.toMap(f1);
 		
 		Loop loop_student = loop_st.addChild("Student");
-		loop_student.addSegment("N1*"+studentXML.get("name"));
-		loop_student.addSegment("N2*"+studentXML.get("gender"));
-		loop_student.addSegment("N3*"+studentXML.get("birthday"));
-		loop_student.addSegment("N4*"+studentXML.get("address"));
-		loop_student.addSegment("N5*"+studentXML.get("native"));
+		loop_student.addSegment("STU*");
+		
+		Loop loop_name = loop_student.addChild("Name");
+		loop_name.addSegment("N1*"+studentXML.get("name"));
+
+		Loop loop_gender = loop_student.addChild("Gender");
+		loop_gender.addSegment("N2*"+studentXML.get("gender"));
+		
+		Loop loop_birthday = loop_student.addChild("Birthday");
+		loop_birthday.addSegment("N3*"+studentXML.get("birthday"));
+		
+		Loop loop_address = loop_student.addChild("Adress");
+		loop_address.addSegment("N4*"+studentXML.get("address"));
+		
+		Loop loop_native = loop_student.addChild("Native");
+		loop_native.addSegment("N5*"+studentXML.get("native"));
 
 		Loop loop_se = loop_gs.addChild("SE");
 		loop_se.addSegment("SE*XX*000000001");
@@ -70,8 +86,16 @@ public class X12Creation {
 		//another way
 		loop_se.getSegment(0).setElement(1, count.toString());
 		
-		System.out.println(loop_st.size());
-		System.out.println(x12.toString());
-		System.out.println(x12.toXML());
+		return x12;
+	}
+	
+	public static void main(String[] args) throws URISyntaxException, IOException {
+		X12Creation x12Creation = new X12Creation();
+		X12 x12 = x12Creation.x12Create();
+		File outFile = new ChooseFile().saveEDIFile();
+		FileWriter fileWriter = new FileWriter(outFile);
+		fileWriter.write(x12.toString());
+		fileWriter.flush();
+		fileWriter.close();
 	}
 }

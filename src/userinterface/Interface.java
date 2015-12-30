@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.TransformerException;
 import javax.swing.JFrame;
 
@@ -225,7 +226,6 @@ public class Interface {
 						nameArray = new Name().search(-1, name);
 						for(Name n:nameArray) {
 							int nameID = n.id; 
-//							JOptionPane.showMessageDialog(new JFrame(), nameID);
 							if(provinceID >= 0) {
 								for(Address adr:nativeArray) {
 									int nativeID = adr.id;
@@ -252,17 +252,17 @@ public class Interface {
 					
 					if(flag == 1 && !studentArray.isEmpty()) {
 						for(Student std:studentArray) {
-//							EtranscriptEdit etranscriptEdit = new EtranscriptEdit();
-							new StudentXML().createXMLFile(std.nameID, std.gender, std.birthday, std.addressID, 
+							StudentXML studentXML = new StudentXML();
+							studentXML.createXMLFile(std.nameID, std.gender, std.birthday, std.addressID, 
 										std.nativeID);
-							Name n = new Name().searchNameByID(std.nameID);
-							JOptionPane.showMessageDialog(new JFrame(), "File "+ n.fullName + ".xml đã được tạo" );
+							JOptionPane.showMessageDialog(new JFrame(), "File "+ studentXML.getFileName(std.nameID) 
+								+ " đã được tạo" );
 							EtranscriptEdit.main(null);
 						}
 					} else if(flag == 1){
 						JOptionPane.showMessageDialog(new JFrame(), "Không tìm thấy kết quả!");
 					}
-				} catch (ClassNotFoundException | SQLException | TransformerException e1) {
+				} catch (ClassNotFoundException | SQLException | TransformerException | XMLStreamException e1) {
 					e1.printStackTrace();
 				} catch (ParseException pe1) {
 					JOptionPane.showMessageDialog(new JFrame(), "Định dạng ngày tháng bạn nhập chưa đúng!");

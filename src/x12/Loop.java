@@ -199,6 +199,7 @@ public class Loop implements Iterable<Segment> {
 	public List<Loop> findLoop(String name) {
 		List<Loop> foundLoops = new ArrayList<Loop>();
 		for (Loop l : this.childList()) {
+//			System.out.println(l.getName());
 			if (name.equals(l.getName())) {
 				foundLoops.add(l);
 			}
