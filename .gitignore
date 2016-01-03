@@ -1,5 +1,5 @@
 resources/x12/*
-resources/edi/*
+resources/xml/*
 !resources/x12/index.edi
-!resources/edi/Đào Văn Hùng.edi
+!resources/xml/index.xml
 /bin/
