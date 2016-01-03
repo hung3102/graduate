@@ -14,7 +14,7 @@ public class X12toXML {
 	
 	private XMLStreamWriter xMLStreamWriter;
 	
-	private void createXML() throws XMLStreamException, IOException, URISyntaxException {
+	private void createXML(File inFile) throws XMLStreamException, IOException, URISyntaxException {
 		XMLOutputFactory xMLOutputFactory = XMLOutputFactory.newInstance();
 		
 		File outFile = new ChooseFile().saveXMLFile();
@@ -22,7 +22,7 @@ public class X12toXML {
 		
         this.xMLStreamWriter.writeStartDocument();
         this.xMLStreamWriter.writeStartElement("student");
-		this.X12Parse();
+		this.X12Parse(inFile);
 		this.xMLStreamWriter.writeEndElement();
         this.xMLStreamWriter.writeEndDocument();
 
@@ -30,12 +30,10 @@ public class X12toXML {
         this.xMLStreamWriter.close();
 	}
 	
-	private void X12Parse() throws URISyntaxException {
+	private void X12Parse(File f1) throws URISyntaxException {
 		X12 x12 = null;
 		Cf cf835 = loadCf(); // candidate for dependency injection
 		Parser parser = new X12Parser(cf835);
-		
-		File f1 = new ChooseFile().getEDIFile();
 		
 		try {
 			x12 = (X12) parser.parse(f1);
@@ -61,7 +59,8 @@ public class X12toXML {
 	
 	public static void main(String[] args) throws XMLStreamException, IOException, URISyntaxException {
 		X12toXML x12toXML = new X12toXML();
-		x12toXML.createXML();
+		File f1 = new ChooseFile().getEDIFile();
+		x12toXML.createXML(f1);
 	}
 
 	// Alternately can be loaded using Spring/DI 

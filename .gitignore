@@ -2,3 +2,4 @@ resources/x12/*
 resources/edi/*
 !resources/x12/index.edi
 !resources/edi/Đào Văn Hùng.edi
+/bin/
