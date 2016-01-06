@@ -11,7 +11,7 @@ public class MySQLConnUtils {
           ClassNotFoundException {
       String hostName = "localhost";
  
-      String dbName = "Etranscript";
+      String dbName = "etranscript";
       String userName = "root";
       String password = "admin";
  

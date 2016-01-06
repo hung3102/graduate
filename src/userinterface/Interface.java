@@ -257,8 +257,8 @@ public class Interface {
 										std.nativeID);
 							JOptionPane.showMessageDialog(new JFrame(), "File "+ studentXML.getFileName(std.nameID) 
 								+ " đã được tạo" );
-							EtranscriptEdit.main(null);
 						}
+						EtranscriptEdit.main(null);
 					} else if(flag == 1){
 						JOptionPane.showMessageDialog(new JFrame(), "Không tìm thấy kết quả!");
 					}
